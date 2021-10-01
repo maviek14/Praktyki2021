@@ -1,0 +1,357 @@
+﻿@using Microsoft.AspNet.Identity
+@model IEnumerable<Praktyki2021.Models.Contract>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+@if (User.IsInRole("User"))
+{
+    <button class="btn btn-default">
+        @Html.ActionLink("Create New", "Create")
+    </button>
+}
+
+<h2>Contracts you have created</h2>
+@if (User.IsInRole("User"))
+{
+    if (Model.Where(c => c.Principal.UserName.Equals(User.Identity.GetUserName())).Count() > 0)
+    {
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Device.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Mandatory)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CreatedTime)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CompletedTime)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Price)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Status)
+                </th>
+                <th></th>
+            </tr>
+
+            @foreach (var item in Model.Where(c => c.Principal.UserName.Equals(User.Identity.GetUserName())))
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Device.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Mandatory.UserName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CreatedTime)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CompletedTime)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Price)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Status)
+                    </td>
+                    <td>
+                        <button class="btn btn-default">
+                            @Html.ActionLink("Details", "Details", new { id = item.ID })
+                            @if (item.Status == Praktyki2021.Models.ContractStatus.Available)
+                            {
+                                @(" | ")                              
+                                @Html.ActionLink("Edit", "Edit", new { id = item.ID })                                                
+                                @(" | ")
+                                @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+                            }
+                            @if (item.Status == Praktyki2021.Models.ContractStatus.Taken)
+                            {
+                                @(" | ")
+                                @Html.ActionLink("Cancel", "Cancel", new { id = item.ID })
+                            }
+                        </button>
+                    </td>
+                </tr>
+            }
+        </table>
+    }
+    else
+    {
+        <p>
+            You have not created any contracts yet.
+        </p>
+    }
+}
+else
+{
+    <p>
+        Administrator cannot create any contracts.
+    </p>
+}
+
+<h2>Contracts you have taken</h2>
+@if (User.IsInRole("User"))
+{
+    if (Model.Where(c => c.Mandatory != null && c.Mandatory.UserName.Equals(User.Identity.GetUserName())).Count() > 0)
+    {
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Device.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Principal)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Mandatory)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CreatedTime)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CompletedTime)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Price)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Status)
+                </th>
+                <th></th>
+            </tr>
+
+            @foreach (var item in Model.Where(c => c.Mandatory != null && c.Mandatory.UserName.Equals(User.Identity.GetUserName())))
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Device.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Principal.UserName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Mandatory.UserName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CreatedTime)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CompletedTime)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Price)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Status)
+                    </td>
+                    <td>
+                        <button class="btn btn-default">
+                            @Html.ActionLink("Details", "Details", new { id = item.ID })
+                            @if (item.Status == Praktyki2021.Models.ContractStatus.Taken)
+                            {
+                                @(" | ")
+                                @Html.ActionLink("Complete", "Complete", new { id = item.ID })
+                                @(" | ")
+                                @Html.ActionLink("Cancel", "Cancel", new { id = item.ID })
+                            }
+                        </button>
+                    </td>
+                </tr>
+            }
+        </table>
+    }
+    else
+    {
+        <p>
+            You have not taken any contracts yet.
+        </p>
+    }
+}
+else
+{
+    <p>
+        Administrator cannot take any contracts.
+    </p>
+}
+
+<h2>Other Users' Contracts</h2>
+@if (User.IsInRole("User"))
+{
+    if (Model.Where(c => !c.Principal.UserName.Equals(User.Identity.GetUserName()) && (c.Mandatory is null || !c.Mandatory.UserName.Equals(User.Identity.GetUserName()))).Count() > 0)
+    {
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Device.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Principal)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Mandatory)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CreatedTime)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CompletedTime)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Price)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Status)
+                </th>
+                <th></th>
+            </tr>
+
+            @foreach (var item in Model.Where(c => !c.Principal.UserName.Equals(User.Identity.GetUserName()) && (c.Mandatory is null || !c.Mandatory.UserName.Equals(User.Identity.GetUserName()))))
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Device.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Principal.UserName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Mandatory.UserName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CreatedTime)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CompletedTime)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Price)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Status)
+                    </td>
+                    <td>
+                        <button class="btn btn-default">
+                            @Html.ActionLink("Details", "Details", new { id = item.ID })
+                            @if (item.Status == Praktyki2021.Models.ContractStatus.Available)
+                            {
+                                @(" | ")
+                                @Html.ActionLink("Take", "Take", new { id = item.ID })
+                            }
+                        </button>
+                    </td>
+                </tr>
+            }
+        </table>
+    }
+    else
+    {
+        <p>
+            There are not any available contracts yet.
+        </p>
+    }
+}
+else
+{
+    if (Model.Count() > 0)
+    {
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Device.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Principal)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Mandatory)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CreatedTime)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CompletedTime)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Price)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Status)
+                </th>
+                <th></th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Device.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Principal.UserName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Mandatory.UserName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CreatedTime)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CompletedTime)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Price)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Status)
+                    </td>
+                    <td>
+                        <button class="btn btn-default">
+                            @Html.ActionLink("Edit", "Edit", new { id = item.ID })
+                            |
+                            @Html.ActionLink("Details", "Details", new { id = item.ID })
+                            |
+                            @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+                        </button>
+                    </td>
+                </tr>
+            }
+        </table>
+    }
+    else
+    {
+        <p>
+            There are not any available contracts yet.
+        </p>
+    }
+}

@@ -1,0 +1,91 @@
+﻿@model Praktyki2021.Models.User
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>User</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Profile.UserName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Profile.UserName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FullName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FullName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AddedTime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AddedTime)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Profile.Contracts)
+        </dt>
+
+        <dd>
+            <table class="table">
+                <tr>
+                    <th>Contract Name</th>
+                    <th>Contract Description</th>
+                    <th>Device Name</th>
+                    <th>Created Time</th>
+                    <th>Completed Time</th>
+                    <th>Price</th>
+                    <th>Status</th>
+                </tr>
+                @foreach (var item in Model.Profile.Contracts)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Description)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Device.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CreatedTime)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CompletedTime)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Price)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Status)
+                        </td>
+                    </tr>
+                }
+            </table>
+        </dd>
+    </dl>
+</div>
+
+
+<button class="btn btn-default">
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ID })
+</button>
+<br />
+<button class="btn btn-default">
+    @Html.ActionLink("Back to List", "Index")
+</button>
+

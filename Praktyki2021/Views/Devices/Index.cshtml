@@ -1,0 +1,119 @@
+﻿@model IEnumerable<Praktyki2021.Models.Device>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<button>
+    @Html.ActionLink("Create New", "Create")
+</button>
+
+<h2>Devices</h2>
+
+@if (User.IsInRole("User"))
+{
+    if (Model.Where(d => d.Profile != null && d.Profile.UserName.Equals(User.Identity.Name)).Count() > 0)
+    {
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.PictureName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Type)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th></th>
+            </tr>
+
+            @foreach (var item in Model.Where(d => d.Profile != null && d.Profile.UserName.Equals(User.Identity.Name)))
+            {
+                <tr>
+                    <td>
+                        @if (item.PictureName != null)
+                        {
+                            <img src="~/Pictures/@Html.DisplayFor(modelItem => item.PictureName)" alt="" height="50px" width="50px" />
+                        }
+                        else
+                        {
+                            @Html.DisplayFor(modelItem => item.PictureName)
+                        }
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Type)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        <button class="btn btn-default">
+                            @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
+                            @Html.ActionLink("Details", "Details", new { id = item.ID }) |
+                            @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+                        </button>
+                    </td>
+                </tr>
+            }
+        </table>
+    }
+    else
+    {
+        <p>
+            You have not created any devices yet.
+        </p>
+    }
+}
+else
+{
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.PictureName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Profile.UserName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Type)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @if (item.PictureName != null)
+                    {
+                        <img src="~/Pictures/@Html.DisplayFor(modelItem => item.PictureName)" alt="" height="50px" width="50px" />
+                    }
+                    else
+                    {
+                        @Html.DisplayFor(modelItem => item.PictureName)
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Profile.UserName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Type)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    <button class="btn btn-default">
+                        @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
+                        @Html.ActionLink("Details", "Details", new { id = item.ID }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+                    </button>
+                </td>
+            </tr>
+        }
+    </table>
+}

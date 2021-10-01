@@ -1,0 +1,61 @@
+﻿@model Praktyki2021.Models.Device
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Device</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Type)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Type)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PictureName)
+        </dt>
+
+        <dd>
+            @if (Model.PictureName != null)
+            {
+                <img src="~/Pictures/@Html.DisplayFor(model => model.PictureName)" alt="" height="50px" width="50px" />
+            }
+            else
+            {
+                @Html.DisplayFor(model => model.PictureName)
+            }
+        </dd>
+
+    </dl>
+</div>
+
+<button class="btn btn-default">
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ID })
+</button>
+<br />
+<button class="btn btn-default">
+    @Html.ActionLink("Back to List", "Index")
+</button>

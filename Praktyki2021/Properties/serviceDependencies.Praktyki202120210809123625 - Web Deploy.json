@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "mssql1": {
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/praktyki2021dbserver/databases/Praktyki2021_db",
+      "type": "mssql.azure",
+      "connectionId": "ConnectionStrings:MyDbConnection",
+      "secretStore": "AzureAppSettings"
+    }
+  }
+}
