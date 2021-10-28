@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace EDService.ViewModels
+namespace Praktyki2021.ViewModels
 {
     public class AddedDateGroup
     {
