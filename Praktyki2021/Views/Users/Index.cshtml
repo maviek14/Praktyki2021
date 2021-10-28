@@ -12,7 +12,7 @@
     @Html.ActionLink("Create New", "Create")
 </p>
 
-@using (Html.BeginForm("Index", "User", FormMethod.Get))
+@using (Html.BeginForm("Index", "Users", FormMethod.Get))
 {
     <p>
         Find by Name: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
